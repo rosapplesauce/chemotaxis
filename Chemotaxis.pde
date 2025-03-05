@@ -6,15 +6,19 @@
  Math.random().
  */
 
-Walker [] aliens; // array of walker class
+Walker[] aliens; // array of Walker class
 
 int bigBallX = 300;
 int bigBallY = 300;
 int bigBallSize = 100;
+PImage alienImage; // Declare a variable for the alien image
+PImage galaxy;//galaxy image
 
 void setup() {
   size(600, 600);
-  aliens = new Walker[10]; // number of small balls
+  aliens = new Walker[10]; // number of small aliens
+  alienImage = loadImage("alien.png"); // Load the alien image (make sure the image is in the data folder)
+  galaxy = loadImage("galaxy.jpg");// my galxy image
   for (int i = 0; i < aliens.length; i++) {
     aliens[i] = new Walker();
   }
@@ -22,25 +26,25 @@ void setup() {
 
 void draw() {
   background(0);
-  
-  // Move and show the bacteria
+  image(galaxy,300,300,width,height);
+  // Move and show the aliens
   boolean allGathered = true;
   for (int i = 0; i < aliens.length; i++) {
     aliens[i].walk();
     aliens[i].show();
     
-    // Check if the alien ball is far from the center
+    // Check if the alien is far from the center
     double distance = dist(aliens[i].myX, aliens[i].myY, bigBallX, bigBallY);
     if (distance > bigBallSize / 2) {
-      allGathered = false; // At least one ball is not gathered yet
+      allGathered = false; // At least one alien is not gathered yet
     }
   }
 
   // Draw the big ball (black hole)
-  fill(255, 0, 0); // Red color for the big ball
+  fill(0, 0, 0); // Red color for the big ball
   ellipse(bigBallX, bigBallY, bigBallSize, bigBallSize);
 
-  // End the program if all balls are gathered at the center
+  // End the program if all aliens are gathered at the center
   if (allGathered) {
     endSimulation();
   }
@@ -63,9 +67,9 @@ class Walker {
 
   void walk() {
     // Move towards the big ball (focal point) with a slower speed
-    int speed = 1; // Lower the speed to make the balls move slower
+    int speed = 1; // Lower the speed to make the aliens move slower
 
-    // Calculate direction from the ball to the center of the big ball
+    // Calculate direction from the alien to the center of the big ball
     if (myX < bigBallX) {
       myX += speed;
     } else if (myX > bigBallX) {
@@ -80,8 +84,8 @@ class Walker {
   }
 
   void show() {
-    fill(255); // small balls (aliens)
-    noStroke();
-    ellipse(myX, myY, 50, 50); // Draw the small balls
+    // Display the alien image
+    imageMode(CENTER); // Position the image at its center
+    image(alienImage, myX, myY, 50, 50); // Draw the alien image (adjust size as needed)
   }
 }
